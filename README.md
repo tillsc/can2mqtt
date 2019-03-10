@@ -11,7 +11,7 @@ This package is based upon the following dependencies:
 * [cantools](https://github.com/eerimoq/cantools)
 * [phao](http://www.eclipse.org/paho/)
 
-Install all required Python 3 dependencies on a rasperry:
+Install all required Python 3 dependencies on a raspberry:
 
     sudo apt-get install python3-pip python3-can
     pip3 install paho-mqtt cantools
