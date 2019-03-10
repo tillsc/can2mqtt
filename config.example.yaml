@@ -1,0 +1,13 @@
+dbc_files:
+ - bhz3.dbc
+ - disp.dbc
+ - eos7.dbc
+can:
+  interface: can0
+  bitrate: 125000
+mqtt:
+  host: some_host_or_ip
+  username: my_mqtt_user
+  password: my_mqtt_password
+  topic_names:
+    first_underscores_to_slash: 2
