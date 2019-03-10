@@ -1,7 +1,7 @@
 [DBC](http://socialledge.com/sjsu/index.php/DBC_Format) based CAN to MQTT brigde
 ===
 
-This is a generic CAN 2 MQTT bridge with Pyhton 3
+This is a generic CAN 2 MQTT bridge build with Python 3
 
 ### Setup
 
