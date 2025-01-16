@@ -26,11 +26,11 @@ class TestStringMethods(unittest.TestCase):
     return CanListener(self.dbc_db, self.mqtt_dummy, cnf)
   
 
-  def build_message(self, message_id, data_byte_1 = 0):
-    return can.Message(timestamp=time.time(), \
-      arbitration_id=500, \
-      data=struct.pack('4b', data_byte_1, 0, 0, 0)\
-    )
+  def build_message(self, message_id, data_byte_1 = 0, timestamp=None):
+    if timestamp == None:
+      timestamp = time.time()
+    return can.Message(timestamp=timestamp, arbitration_id=500, \
+      data=struct.pack('4b', data_byte_1, 0, 0, 0))
 
   def test_can_listener_converts_topic_names(self):
     can_listener = self.build_can_listener()
@@ -50,6 +50,16 @@ class TestStringMethods(unittest.TestCase):
     self.mqtt_dummy.reset()
     can_listener.on_message_received(msg)
     self.assertEqual(self.mqtt_dummy.last_topic, None)
+
+    self.mqtt_dummy.reset()
+    msg2 = self.build_message(500, 50, msg.timestamp + 20)
+    can_listener.on_message_received(msg2)
+    self.assertEqual(self.mqtt_dummy.last_topic, None)
+
+    self.mqtt_dummy.reset()
+    msg3 = self.build_message(500, 50, msg.timestamp + 31)
+    can_listener.on_message_received(msg3)
+    self.assertEqual(self.mqtt_dummy.last_topic, 'io/debug/test_unsigned')
 
   def test_force_resend_same_data(self):
     can_listener = self.build_can_listener({'resend_unchanged_events_after': 0})
