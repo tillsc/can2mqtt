@@ -136,7 +136,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['python-can', 'cantools', 'paho-mqtt'],  # Optional
+    install_requires=['python-can', 'cantools', 'paho-mqtt', 'pyyaml'],  # Optional
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -148,7 +148,7 @@ setup(
     # projects.
     extras_require={  # Optional
         'dev': [''],
-        'test': [''],
+        'test': ['pytest'],
     },
 
     # If there are data files included in your packages that need to be
