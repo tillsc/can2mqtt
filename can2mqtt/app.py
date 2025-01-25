@@ -1,9 +1,10 @@
 import can
 import cantools
-import paho.mqtt.client as mqtt
 import yaml
 import threading
+from can2mqtt.converter import Converter
 from can2mqtt.can_listener import CanListener
+from can2mqtt.mqtt_handler import MqttHandler
 
 def load_config():
   with open('config.yaml', 'r') as stream:
@@ -17,12 +18,16 @@ def load_dbc_db(dbc_files):
   return dbc_db
 
 def main_program(config, dbc_db):
-    mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-    mqtt_client.username_pw_set(username=config['mqtt']['username'],password=config['mqtt']['password'])
-    mqtt_client.connect(config['mqtt']['host'])
+  converter = Converter(dbc_db, config)
+  
+  can_config = config.get('can', {})
+  can_bus = can.interface.Bus(bustype = can_config.get('bustype', 'socketcan'), \
+    channel = can_config.get('interface', 'can0'), \
+    bitrate = can_config.get('bitrate', 125000))
 
-    can_listener = CanListener(dbc_db, mqtt_client, config)
-    bus = can.interface.Bus(bustype='socketcan', channel=config['can']['interface'], bitrate=config['can']['bitrate'])
-    can.Notifier(bus, [can_listener])
+  mqtt_handler = MqttHandler(config.get('mqtt', {}), can_bus, converter)
 
-    threading.Event().wait()
+  can_listener = CanListener(mqtt_handler, converter, config.get('resend_unchanged_events_after', 30))
+  can.Notifier(can_bus, [can_listener])
+ 
+  mqtt_handler.loop_forever()

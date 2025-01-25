@@ -9,5 +9,6 @@ mqtt:
   host: some_host_or_ip
   username: my_mqtt_user
   password: my_mqtt_password
-  topic_names:
-    first_underscores_to_slash: 2
+send_to_can_from_topic: mqtt2can
+name_conversion:
+  first_underscores_to_slash: 2
