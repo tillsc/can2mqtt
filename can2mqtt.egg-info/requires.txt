@@ -1,9 +1,0 @@
-python-can
-cantools
-paho-mqtt
-pyyaml
-
-[dev]
-
-[test]
-pytest
