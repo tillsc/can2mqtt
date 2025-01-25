@@ -1,0 +1,2 @@
+[console_scripts]
+run = run:main
